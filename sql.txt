@@ -1,0 +1,31 @@
+USE Store
+
+SELECT p.name
+FROM Sale s JOIN Products p ON s.id_product = p.id
+WHERE s.price > 50
+
+SELECT c.name
+FROM Delivery d JOIN Products p ON d.id_product = p.id
+JOIN Category c ON p.id_category = c.id
+WHERE d.price >= 50
+
+
+SELECT s.name, d.price
+FROM Delivery d JOIN Supplier s ON d.id_supplier = s.id
+WHERE d.date_of_delivery BETWEEN GETDATE() - DAY(30) AND GETDATE()
+
+
+SELECT pr.name, ctr.name + ' - ' + c.name + ' - ' + a.street AS adress
+FROM Sale s JOIN Products p ON s.id_product = p.id
+JOIN Producer pr ON p.id_producer = pr.id
+JOIN Address a ON pr.id_adress = a.id
+JOIN City c ON a.id_city = c.id
+JOIN Region rg ON c.id_region = rg.id
+JOIN Country ctr ON rg.id_country = ctr.id
+WHERE s.price * s.quantity BETWEEN 500 AND 20000
+
+SELECT c.name, SUM(p.quantity)
+FROM Delivery d JOIN Products p ON d.id_product = p.id
+JOIN Category c ON p.id_category = c.id 
+WHERE d.price * d.quantity > 400 AND d.id IN (1, 3, 4)
+GROUP BY c.name
